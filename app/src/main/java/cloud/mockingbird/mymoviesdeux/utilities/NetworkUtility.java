@@ -3,7 +3,7 @@ package cloud.mockingbird.mymoviesdeux.utilities;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
-import cloud.mockingbird.mymovies.R;
+import cloud.mockingbird.mymoviesdeux.R;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;

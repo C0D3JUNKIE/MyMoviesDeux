@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Parcelable;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,16 +12,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import cloud.mockingbird.mymovies.MoviePosterAdapter.MoviePosterAdapterOnClickHandler;
-import cloud.mockingbird.mymovies.data.MoviePreferences;
-import cloud.mockingbird.mymovies.utilities.JsonUtility;
-import cloud.mockingbird.mymovies.utilities.NetworkUtility;
 import cloud.mockingbird.mymoviesdeux.data.MoviePreferences;
 import cloud.mockingbird.mymoviesdeux.utilities.JsonUtility;
 import cloud.mockingbird.mymoviesdeux.utilities.NetworkUtility;
+
 
 import java.net.URL;
 
