@@ -18,7 +18,11 @@ public class NetworkUtility {
 
     //Class variables for networking methods
     private static final String LOG_TAG = NetworkUtility.class.getSimpleName();
-    private static final String BASE_URL = "https://api.themoviedb.org/3/movie";
+    private static final String BASE_URL = "https://api.themoviedb.org/";
+    private static final String VERSION = "4";
+    private static final String MOVIE_PARAM = "movie";
+    private static final String TRAILER_PARAM = "videos";
+    private static final String REVIEW_PARAM = "reviews";
     private static final String DEFAULT_URL = BASE_URL;
     private static final String KEY_PARAM = "api_key";
     private static final String LANG_PARAM = "en-US";
@@ -30,16 +34,74 @@ public class NetworkUtility {
      *
      * @return URL
      */
-    public static URL buildUrl(Context context, String params) {
+    public static URL buildMoviesUrl(Context context, String params) {
 
         Uri builtUri = Uri.parse(DEFAULT_URL)
                 .buildUpon()
+                .appendPath(VERSION)
+                .appendPath(MOVIE_PARAM)
                 .appendPath(params)
                 .appendQueryParameter(KEY_PARAM, context.getString(
                         R.string.movie_db_key))
                 .appendQueryParameter("language", LANG_PARAM)
                 .appendQueryParameter("page", PAGE_PARAM)
                 .build();
+        URL url = null;
+
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        Log.v(LOG_TAG, "Built URI " + url);
+
+        return url;
+
+    }
+
+    /**
+     *
+     * @param context
+     * @param params
+     * @return
+     */
+    public static URL buildReviewUrl(Context context, String params) {
+
+        Uri builtUri = Uri.parse(DEFAULT_URL)
+            .buildUpon()
+            .appendPath(VERSION)
+            .appendPath(MOVIE_PARAM)
+            .appendPath(params)
+            .appendPath(REVIEW_PARAM)
+            .appendQueryParameter(KEY_PARAM, context.getString(
+                R.string.movie_db_key))
+            .build();
+        URL url = null;
+
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        Log.v(LOG_TAG, "Built URI " + url);
+
+        return url;
+
+    }
+
+    public static URL buildTrailerUrl(Context context, String params) {
+
+        Uri builtUri = Uri.parse(DEFAULT_URL)
+            .buildUpon()
+            .appendPath(VERSION)
+            .appendPath(MOVIE_PARAM)
+            .appendPath(params)
+            .appendPath(TRAILER_PARAM)
+            .appendQueryParameter(KEY_PARAM, context.getString(
+                R.string.movie_db_key))
+            .build();
         URL url = null;
 
         try {
