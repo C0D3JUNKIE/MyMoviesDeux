@@ -3,6 +3,8 @@ package cloud.mockingbird.mymoviesdeux.utilities;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
+
+import cloud.mockingbird.mymoviesdeux.BuildConfig;
 import cloud.mockingbird.mymoviesdeux.R;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +21,7 @@ public class NetworkUtility {
     //Class variables for networking methods
     private static final String LOG_TAG = NetworkUtility.class.getSimpleName();
     private static final String BASE_URL = "https://api.themoviedb.org/";
-    private static final String VERSION = "4";
+    private static final String VERSION = "3";
     private static final String MOVIE_PARAM = "movie";
     private static final String TRAILER_PARAM = "videos";
     private static final String REVIEW_PARAM = "reviews";
@@ -62,7 +64,6 @@ public class NetworkUtility {
 
     /**
      *
-     * @param context
      * @param params
      * @return
      */

@@ -31,11 +31,12 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     public static final int TEXT_INDEX_ID = 1;
     public static final int IMAGE_INDEX_ID = 5;
 
+    public static TextView errorMessageDisplay;
+    public static ProgressBar loadingIndicator;
+
     //Local Variables
     private MoviePosterAdapter moviePosterAdapter;
     private RecyclerView recyclerView;
-    private TextView errorMessageDisplay;
-    private ProgressBar loadingIndicator;
     private GridLayoutManager layoutManager;
     private Parcelable moviePostersState;
 
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     /**
      * Displays movie data in recycler view.
      */
-    protected void showMovies() {
+    public void showMovies() {
         errorMessageDisplay.setVisibility(View.INVISIBLE);
         recyclerView.setVisibility(View.VISIBLE);
     }
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     /**
      * Calls showMovies method and gets specified sort and creates nested class object.
      */
-    protected void loadMovies() {
+    public void loadMovies() {
         showMovies();
         String selectedSort = MoviePreferences.getSortPreferred();
         new FetchMovies().execute(selectedSort);
@@ -128,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
     /**
      * Displays error message
      */
-    protected void showErrorMessage() {
+    public void showErrorMessage() {
         recyclerView.setVisibility(View.INVISIBLE);
         errorMessageDisplay.setVisibility(View.VISIBLE);
     }
@@ -163,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements MoviePosterAdapte
                 return null;
             }
             String params = strings[0];
-            URL movieURL = NetworkUtility.buildUrl(MainActivity.this, params);
+            URL movieURL = NetworkUtility.buildMoviesUrl(MainActivity.this, params);
             try {
                 String jsonResponse = NetworkUtility.getResponseFromHttpURL(movieURL);
                 String[][] jsonMovieData = JsonUtility.getMoviePosterValuesFromJson(jsonResponse);
