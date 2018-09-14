@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ShareCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,8 +17,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import cloud.mockingbird.mymoviesdeux.model.MovieReview;
+import cloud.mockingbird.mymoviesdeux.model.MovieTrailer;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,7 +35,7 @@ import cloud.mockingbird.mymoviesdeux.utilities.NetworkUtility;
 /**
  * Activity class with super class of AppCompatActivity
  */
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements TrailerAdapter.TrailerAdapterOnClickHandler{
 
   //Class variable for Image URL
   private static final String IMAGE_URL = "https://image.tmdb.org/t/p/w185";
@@ -38,8 +43,10 @@ public class DetailActivity extends AppCompatActivity {
 
 
   //Local variables
+  private Context context;
   private String[] movie;
-  private String[][] trailerMovieData;
+  private List<MovieTrailer> trailerMovieData = new ArrayList<>();
+  private List<MovieReview> reviewMovieData = new ArrayList<>();
 
   private ImageView movieImage;
 
@@ -49,10 +56,9 @@ public class DetailActivity extends AppCompatActivity {
   private TextView movieDescription;
 
   private double movie_rating;
-
   private int movie_review_number;
 
-  private LinearLayout trailerListLayout;
+
 
   /**
    * Simple onCreate method for binding view, adapter and xml.
@@ -62,6 +68,15 @@ public class DetailActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_detail);
 
+    context = getApplicationContext();
+
+    ActionBar actionBar = getSupportActionBar();
+    if(actionBar != null){
+      actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    Bundle data = getIntent().getExtras();
+
     //Binding view with xml
     movieImage = findViewById(R.id.iv_movie_poster_image);
     movieTitle = findViewById(R.id.tv_movie_title);
@@ -69,7 +84,7 @@ public class DetailActivity extends AppCompatActivity {
     movieRating = findViewById(R.id.tv_movie_vote_average);
     movieDescription = findViewById(R.id.tv_movie_plot);
 
-    trailerListLayout = findViewById(R.id.ll_movie_trailers);
+
 
     //Explicit intent from startActivity method from MainActivity.onClick
     //id[0], title[1], plot[2], language[3], date[4], image[5], vote[6], rating[7]
@@ -86,41 +101,41 @@ public class DetailActivity extends AppCompatActivity {
       }
     }
 
-    new FetchTrailers().execute();
+
 
   }
 
 
-  private void loadTrailerData() {
-    if (trailerMovieData.length == 0) {
-      TextView noTrailerText = new TextView(this);
-      noTrailerText.setText("There a no trailers for this movie.");
-      noTrailerText.setPadding(0, 0, 0, 0);
-      trailerListLayout.addView(noTrailerText);
-    } else {
-      for (int i = 0; i < trailerMovieData.length; i++) {
-        for (int j = 0; j < 2; j++) {
-          Button trailerItem = new Button(this);
-          trailerItem.setText(trailerMovieData[i][j]);
-          trailerItem.setPadding(0, 24, 0, 24);
-          trailerItem.setTextSize(18);
-          final String trailerUrl = TRAILER_BASE_URL + trailerMovieData[j];
-          trailerItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-              Uri videoLink = Uri.parse(trailerUrl);
-              Intent videoIntent = new Intent(Intent.ACTION_VIEW, videoLink);
-              if (videoIntent.resolveActivity(getPackageManager()) != null) {
-                startActivity(videoIntent);
-              }
-            }
-          });
-          trailerListLayout.addView(trailerItem);
-        }
-      }
-
-    }
-  }
+//  private void loadTrailerData() {
+//    if (trailerMovieData.length == 0) {
+//      TextView noTrailerText = new TextView(this);
+//      noTrailerText.setText("There a no trailers for this movie.");
+//      noTrailerText.setPadding(0, 0, 0, 0);
+//      trailerListLayout.addView(noTrailerText);
+//    } else {
+//      for (int i = 0; i < trailerMovieData.length; i++) {
+//        for (int j = 0; j < 2; j++) {
+//          Button trailerItem = new Button(this);
+//          trailerItem.setText(trailerMovieData[i][j]);
+//          trailerItem.setPadding(0, 24, 0, 24);
+//          trailerItem.setTextSize(18);
+//          final String trailerUrl = TRAILER_BASE_URL + trailerMovieData[j];
+//          trailerItem.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//              Uri videoLink = Uri.parse(trailerUrl);
+//              Intent videoIntent = new Intent(Intent.ACTION_VIEW, videoLink);
+//              if (videoIntent.resolveActivity(getPackageManager()) != null) {
+//                startActivity(videoIntent);
+//              }
+//            }
+//          });
+//          trailerListLayout.addView(trailerItem);
+//        }
+//      }
+//
+//    }
+//  }
 
 
   //Activity life cycle support
@@ -135,34 +150,34 @@ public class DetailActivity extends AppCompatActivity {
 
   }
 
-  public class FetchTrailers extends AsyncTask<String, Void, String[][]> {
-
-    @Override
-    protected void onPreExecute() {
-      super.onPreExecute();
-    }
-
-    @Override
-    protected void onPostExecute(String[][] result) {
-      loadTrailerData();
-    }
-
-    @Override
-    protected String[][] doInBackground(String... strings) {
-      if (strings.length == 0) {
-        return null;
-      }
-      String params = strings[0];
-      URL requestTrailerUrl = NetworkUtility.buildTrailerUrl(DetailActivity.this, params);
-      try {
-        String trailerResponse = NetworkUtility.getResponseFromHttpURL(requestTrailerUrl);
-        trailerMovieData = JsonUtility.getTrailerData(trailerResponse);
-        return trailerMovieData;
-      } catch (Exception e) {
-        e.printStackTrace();
-        return null;
-      }
-    }
-  }
+//  public class FetchTrailers extends AsyncTask<String, Void, String[][]> {
+//
+//    @Override
+//    protected void onPreExecute() {
+//      super.onPreExecute();
+//    }
+//
+//    @Override
+//    protected void onPostExecute(String[][] result) {
+//      loadTrailerData();
+//    }
+//
+//    @Override
+//    protected String[][] doInBackground(String... strings) {
+//      if (strings.length == 0) {
+//        return null;
+//      }
+//      String params = strings[0];
+//      URL requestTrailerUrl = NetworkUtility.buildTrailerUrl(DetailActivity.this, params);
+//      try {
+//        String trailerResponse = NetworkUtility.getResponseFromHttpURL(requestTrailerUrl);
+//        trailerMovieData = JsonUtility.getTrailerData(trailerResponse);
+//        return trailerMovieData;
+//      } catch (Exception e) {
+//        e.printStackTrace();
+//        return null;
+//      }
+//    }
+//  }
 
 }
