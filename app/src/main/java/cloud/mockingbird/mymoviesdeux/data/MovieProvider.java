@@ -19,11 +19,18 @@ public class MovieProvider extends ContentProvider {
 
   public static final String COLUMN_ID = "_ID";
   public static final String COLUMN_MOVIE_ID = "movie_id";
+  public static final String COLUMN_VOTE_AVERAGE = "vote_average";
   public static final String COLUMN_TITLE = "title";
-  public static final String COLUMN_POSTER = "poster_key";
+  public static final String COLUMN_POPULARITY = "popularity";
+  public static final String COLUMN_POSTER = "poster_path";
+  public static final String COLUMN_ORIGINAL_LANGUAGE = "original_language";
+  public static final String COLUMN_ORIGINAL_TITLE = "original_title";
+  public static final String COLUMN_BACKDROP_PATH = "backdrop_path";
+  public static final String COLUMN_ADULT = "adult";
   public static final String COLUMN_DESCRIPTION = "description";
-  public static final String COLUMN_RATING = "rating";
   public static final String COLUMN_RELEASE_DATE = "release_date";
+  public static final String COLUMN_VIDEOS = "videos";
+  public static final String COLUMN_REVIEWS = "reviews";
 
   private MovieDbHelper movieDbHelper;
 
@@ -35,10 +42,18 @@ public class MovieProvider extends ContentProvider {
 
   @Nullable
   @Override
-  public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) {
-    Cursor cursor;
-    cursor = movieDbHelper.getReadableDatabase().query(movieDbHelper.TABLE_NAME, strings, s, strings1, null, null, s1);
-    return cursor;
+  public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
+    return null;
+  }
+
+  @Override
+  public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
+    return super.bulkInsert(uri, values);
+  }
+
+  @Override
+  public void shutdown() {
+    super.shutdown();
   }
 
   @Nullable
@@ -49,26 +64,17 @@ public class MovieProvider extends ContentProvider {
 
   @Nullable
   @Override
-  public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
-    final SQLiteDatabase database = movieDbHelper.getWritableDatabase();
-    long movieId = database.insert(movieDbHelper.TABLE_NAME, null, contentValues);
-    if(movieId > 0){
-      Uri r = ContentUris.withAppendedId(uri, movieId);
-      getContext().getContentResolver().notifyChange(r, null);
-      return r;
-    }else{
-      return null;
-    }
+  public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
+    return null;
   }
 
   @Override
-  public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
+  public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
     return 0;
   }
 
   @Override
-  public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
+  public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
     return 0;
   }
-
 }

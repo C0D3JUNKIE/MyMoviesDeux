@@ -1,6 +1,12 @@
 package cloud.mockingbird.mymoviesdeux.utilities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONArray;
@@ -38,6 +44,9 @@ public class JsonUtility {
     public static final String KEY_MOVIE_ADULT = "adult"; //This is a boolean value
     public static final String KEY_MOVIE_OVERVIEW = "overview";
     public static final String KEY_MOVIE_RELEASE_DATE = "release_date";
+
+    private static final String TRAILER_KEY = "key";
+    private static final String TRAILER_NAME = "name";
 
     /**
      * Method for associating returned values from API to MyMovies and MoviePoster object.
@@ -148,8 +157,7 @@ public class JsonUtility {
             String release_date = individualMovieObject.getString(KEY_MOVIE_RELEASE_DATE);
 
             //String array to hold individual movie:  id[0], title[1], plot[2], language[3], date[4], image[5], vote[6], rating[7]
-            String[] individualMovie = {String.valueOf(identification), title, plot, original_language,
-                    release_date, image, String.valueOf(vote_count), String.valueOf(rating)};
+            String[] individualMovie = {String.valueOf(identification), title, plot, original_language, release_date, image, String.valueOf(vote_count), String.valueOf(rating)};
             movieContentValues[i] = individualMovie;
 
         }
@@ -157,6 +165,22 @@ public class JsonUtility {
         //return parsed values
         return movieContentValues;
 
+    }
+
+    public static String[][] getTrailerData(String trailerDataResponse) throws JSONException{
+
+      JSONObject trailerObject = new JSONObject(trailerDataResponse);
+      JSONArray trailerResults = trailerObject.getJSONArray(KEY_RESULTS);
+      int jsonTrailerLength = trailerObject.length();
+      String[][] trailerContentValues = new String[jsonTrailerLength][];
+      for(int i = 0; i < jsonTrailerLength; i++) {
+        JSONObject individualTrailerObject = trailerResults.getJSONObject(i);
+        String trailerKey = individualTrailerObject.getString(TRAILER_KEY);
+        String trailerName = individualTrailerObject.getString(TRAILER_NAME);
+        String[] individualTrailer = {trailerKey, trailerName};
+        trailerContentValues[i] = individualTrailer;
+        }
+      return trailerContentValues;
     }
 
 }

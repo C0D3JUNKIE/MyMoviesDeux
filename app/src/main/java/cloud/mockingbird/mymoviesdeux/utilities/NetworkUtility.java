@@ -133,7 +133,8 @@ public class NetworkUtility {
             Scanner scanner = new Scanner(in);
             scanner.useDelimiter("\\A");
 
-            if (scanner.hasNext()) {
+            boolean hasData = scanner.hasNext();
+            if (hasData) {
                 return scanner.next();
             } else {
                 return null;
