@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import butterknife.BindView;
 import cloud.mockingbird.mymoviesdeux.data.MoviePreferences;
 import cloud.mockingbird.mymoviesdeux.utilities.JsonUtility;
 import cloud.mockingbird.mymoviesdeux.utilities.NetworkUtility;
@@ -33,10 +32,9 @@ public class MainActivity extends AppCompatActivity implements
   public static final int TEXT_INDEX_ID = 1;
   public static final int IMAGE_INDEX_ID = 5;
 
-  @BindView(R.id.tv_error_message_display) TextView errorMessageDisplay;
-//  public static TextView errorMessageDisplay;
-  @BindView(R.id.pb_loading_indicator) ProgressBar loadingIndicator;
-//  public static ProgressBar loadingIndicator;
+
+  public static TextView errorMessageDisplay;
+  public static ProgressBar loadingIndicator;
 
   //Local Variables
   private MoviePosterAdapter moviePosterAdapter;

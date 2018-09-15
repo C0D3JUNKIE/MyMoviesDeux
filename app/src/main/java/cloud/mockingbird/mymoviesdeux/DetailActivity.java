@@ -2,9 +2,11 @@ package cloud.mockingbird.mymoviesdeux;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.app.ActionBar;
@@ -17,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import cloud.mockingbird.mymoviesdeux.databinding.ActivityDetailBinding;
+import cloud.mockingbird.mymoviesdeux.model.MoviePoster;
 import cloud.mockingbird.mymoviesdeux.model.MovieReview;
 import cloud.mockingbird.mymoviesdeux.model.MovieTrailer;
 import com.squareup.picasso.Picasso;
@@ -42,14 +46,16 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
   private static final String TRAILER_BASE_URL = "http://youtube.com/watch?v=";
 
 
+
   //Local variables
+  private ActivityDetailBinding bindingDetails;
   private Context context;
+  private Parcelable layoutManagerTrailer;
+  private Parcelable layoutManagerReviews;
   private String[] movie;
   private List<MovieTrailer> trailerMovieData = new ArrayList<>();
   private List<MovieReview> reviewMovieData = new ArrayList<>();
-
   private ImageView movieImage;
-
   private TextView movieTitle;
   private TextView movieReleaseDate;
   private TextView movieRating;
@@ -57,7 +63,9 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
 
   private double movie_rating;
   private int movie_review_number;
-
+  private MoviePoster moviePoster;
+  private TrailerAdapter trailerAdapter;
+  private ReviewAdapter reviewAdapter;
 
 
   /**
@@ -68,6 +76,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_detail);
 
+    bindingDetails = DataBindingUtil.setContentView(this, R.layout.activity_detail);
     context = getApplicationContext();
 
     ActionBar actionBar = getSupportActionBar();
@@ -76,13 +85,14 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
     }
 
     Bundle data = getIntent().getExtras();
-
     //Binding view with xml
-    movieImage = findViewById(R.id.iv_movie_poster_image);
-    movieTitle = findViewById(R.id.tv_movie_title);
-    movieReleaseDate = findViewById(R.id.tv_movie_release_date);
-    movieRating = findViewById(R.id.tv_movie_vote_average);
-    movieDescription = findViewById(R.id.tv_movie_plot);
+    bindingDetails.tvMovieTitle.setText(moviePoster.getMovieTitle());
+    String posterUrl = moviePoster.getMovieImagePath();
+    Picasso.get().load(IMAGE_URL + posterUrl)
+        .into(bindingDetails.ivMoviePosterImage);
+    bindingDetails.tvMovieReleaseDate.setText(moviePoster.getMovieReleaseDate());
+    bindingDetails.tvMovieVoteAverage.setText(moviePoster.getMovieRating());
+    bindingDetails.tvMoviePlot.setText(moviePoster.getMovieDescription());
 
 
 
@@ -137,6 +147,11 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
 //    }
 //  }
 
+
+  @Override
+  public void onClick(MovieTrailer trailer) {
+
+  }
 
   //Activity life cycle support
   @Override
