@@ -26,10 +26,7 @@ public class MoviePosterAdapter extends
   final private MoviePosterAdapterOnClickHandler clickHandler;
 
   //Nested interface for onClick implementation
-  public interface MoviePosterAdapterOnClickHandler {
-
-    void onClick(String[] moviePosterSelected);
-  }
+  public interface MoviePosterAdapterOnClickHandler { void onClick(String[] moviePosterSelected);}
 
   //Adapter constructor
   public MoviePosterAdapter(MoviePosterAdapterOnClickHandler handler) {
