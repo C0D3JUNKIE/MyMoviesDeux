@@ -8,33 +8,26 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ShareCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import android.widget.Toast;
-import cloud.mockingbird.mymoviesdeux.data.MovieProvider;
+
+import cloud.mockingbird.mymoviesdeux.adapters.ReviewAdapter;
+import cloud.mockingbird.mymoviesdeux.adapters.TrailerAdapter;
 import cloud.mockingbird.mymoviesdeux.databinding.ActivityDetailBinding;
 import cloud.mockingbird.mymoviesdeux.model.MoviePoster;
 import cloud.mockingbird.mymoviesdeux.model.MovieReview;
-import cloud.mockingbird.mymoviesdeux.model.MovieTrailer;
 
 import cloud.mockingbird.mymoviesdeux.utilities.JsonUtility;
 import cloud.mockingbird.mymoviesdeux.utilities.NetworkUtility;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**

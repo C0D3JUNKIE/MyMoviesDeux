@@ -1,4 +1,4 @@
-package cloud.mockingbird.mymoviesdeux;
+package cloud.mockingbird.mymoviesdeux.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import cloud.mockingbird.mymoviesdeux.model.MovieTrailer;
+
+import cloud.mockingbird.mymoviesdeux.R;
+
 import com.squareup.picasso.Picasso;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerAdapterViewHolder> {
 

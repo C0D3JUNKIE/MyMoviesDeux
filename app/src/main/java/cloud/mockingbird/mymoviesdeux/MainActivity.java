@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import cloud.mockingbird.mymoviesdeux.adapters.MoviePosterAdapter;
 import cloud.mockingbird.mymoviesdeux.data.MoviePreferences;
 import cloud.mockingbird.mymoviesdeux.utilities.JsonUtility;
 import cloud.mockingbird.mymoviesdeux.utilities.NetworkUtility;

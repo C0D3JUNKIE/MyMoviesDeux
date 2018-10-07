@@ -1,4 +1,4 @@
-package cloud.mockingbird.mymoviesdeux;
+package cloud.mockingbird.mymoviesdeux.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
-import org.w3c.dom.Text;
+
+import cloud.mockingbird.mymoviesdeux.MainActivity;
+import cloud.mockingbird.mymoviesdeux.R;
 
 /**
  * Adapter class for RecyclerView implementation.  Modeled on the Udacity's Sunshine projects Forecast Adapter.
