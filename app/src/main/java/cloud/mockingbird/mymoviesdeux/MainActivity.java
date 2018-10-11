@@ -2,8 +2,10 @@ package cloud.mockingbird.mymoviesdeux;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.AsyncTask;
 import android.os.Parcelable;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,6 +19,8 @@ import android.widget.TextView;
 
 import cloud.mockingbird.mymoviesdeux.adapters.MoviePosterAdapter;
 import cloud.mockingbird.mymoviesdeux.data.MoviePreferences;
+import cloud.mockingbird.mymoviesdeux.databinding.ActivityMainBinding;
+import cloud.mockingbird.mymoviesdeux.tasks.FetchFavorites;
 import cloud.mockingbird.mymoviesdeux.utilities.JsonUtility;
 import cloud.mockingbird.mymoviesdeux.utilities.NetworkUtility;
 
@@ -28,6 +32,9 @@ import java.net.URL;
  */
 public class MainActivity extends AppCompatActivity implements
     MoviePosterAdapter.MoviePosterAdapterOnClickHandler {
+
+  //data binding
+  ActivityMainBinding bindingMain;
 
   //Class variables
   private static final String TAG = MainActivity.class.getSimpleName();
@@ -44,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements
   private GridLayoutManager layoutManager;
   private Parcelable moviePostersState;
 
+  public static Context context;
+
   /**
    * Simple onCreate method for binding view, adapter and xml.
    * Call to loadMovies
@@ -51,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+    bindingMain = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
     //Tie recyclerView, errorText, and progressBar to the xml entity.
     recyclerView = findViewById(R.id.rv_movie_posters);
@@ -199,6 +208,9 @@ public class MainActivity extends AppCompatActivity implements
         return true;
       case R.id.action_by_popularity:
         new FetchMovies().execute(MoviePreferences.PREF_SORT_POPULARITY);
+        return true;
+      case R.id.action_favorite:
+        new FetchFavorites().execute(MoviePreferences.PREF_SORT_FAVORITE);
         return true;
       case R.id.action_refresh:
         moviePosterAdapter.setMoviePosterData(null);

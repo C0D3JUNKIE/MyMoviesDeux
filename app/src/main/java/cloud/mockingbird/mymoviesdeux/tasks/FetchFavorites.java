@@ -2,7 +2,7 @@ package cloud.mockingbird.mymoviesdeux.tasks;
 
 import android.os.AsyncTask;
 
-public class FetchReviews extends AsyncTask<String, Void, String> {
+public class FetchFavorites extends AsyncTask<String, Void, String> {
 
   @Override
   protected void onPreExecute() {

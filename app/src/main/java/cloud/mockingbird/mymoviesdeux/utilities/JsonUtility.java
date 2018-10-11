@@ -45,8 +45,13 @@ public class JsonUtility {
     public static final String KEY_MOVIE_OVERVIEW = "overview";
     public static final String KEY_MOVIE_RELEASE_DATE = "release_date";
 
+    private static final String TRAILER_ID = "id";
     private static final String TRAILER_KEY = "key";
     private static final String TRAILER_NAME = "name";
+
+    private static final String REVIEW_ID = "id";
+    private static final String REVIEW_AUTHOR = "author";
+    private static final String REVIEW_CONTENT = "content";
 
     /**
      * Method for associating returned values from API to MyMovies and MoviePoster object.
@@ -54,7 +59,7 @@ public class JsonUtility {
      * @return String[][] multidimensional array with associated values.
      */
     public static String[][] getMoviePosterValuesFromJson(String movieJsonString)
-            throws JSONException {
+        throws JSONException {
 
         //Declaring and initializing tokener.  Saw on walkthrough not sure this is needed since we are not doing a lot of iterating.
         //Strictly for logging purposes I presume.
@@ -73,7 +78,7 @@ public class JsonUtility {
             String movieDbStatus = moviePoster_root.getString(STATUS_MESSAGE);
             if (moviePoster_root.has(STATUS_MESSAGE)) {
                 movieDbStatus = String
-                        .format("JSON STATUS MESSAGE: ", moviePoster_root.getString(STATUS_MESSAGE));
+                    .format("JSON STATUS MESSAGE: ", moviePoster_root.getString(STATUS_MESSAGE));
             }
             //Switch for MovieDB status codes, for specific messages see:  https://www.themoviedb.org/documentation/api/status-codes
             switch (movieDbResponse) {
@@ -169,18 +174,35 @@ public class JsonUtility {
 
     public static String[][] getTrailerData(String trailerDataResponse) throws JSONException{
 
-      JSONObject trailerObject = new JSONObject(trailerDataResponse);
-      JSONArray trailerResults = trailerObject.getJSONArray(KEY_RESULTS);
-      int jsonTrailerLength = trailerObject.length();
-      String[][] trailerContentValues = new String[jsonTrailerLength][];
-      for(int i = 0; i < jsonTrailerLength; i++) {
-        JSONObject individualTrailerObject = trailerResults.getJSONObject(i);
-        String trailerKey = individualTrailerObject.getString(TRAILER_KEY);
-        String trailerName = individualTrailerObject.getString(TRAILER_NAME);
-        String[] individualTrailer = {trailerKey, trailerName};
-        trailerContentValues[i] = individualTrailer;
+        JSONObject trailerObject = new JSONObject(trailerDataResponse);
+        JSONArray trailerResults = trailerObject.getJSONArray(KEY_RESULTS);
+        int jsonTrailerLength = trailerObject.length();
+        String[][] trailerContentValues = new String[jsonTrailerLength][];
+        for(int i = 0; i < jsonTrailerLength; i++) {
+            JSONObject individualTrailerObject = trailerResults.getJSONObject(i);
+            String trailerKey = individualTrailerObject.getString(TRAILER_KEY);
+            String trailerName = individualTrailerObject.getString(TRAILER_NAME);
+            String[] individualTrailer = {trailerKey, trailerName};
+            trailerContentValues[i] = individualTrailer;
         }
-      return trailerContentValues;
+
+        return trailerContentValues;
+    }
+
+    public static String[][] getReviewData(String reviewDataResponse) throws JSONException{
+
+        JSONObject reviewObject = new JSONObject(reviewDataResponse);
+        JSONArray reviewResults = reviewObject.getJSONArray(KEY_RESULTS);
+        int jsonReviewLength = reviewObject.length();
+        String[][] reviewContentValues = new String[jsonReviewLength][];
+        for(int i = 0; i < jsonReviewLength; i++){
+            JSONObject individualReviewObject = reviewResults.getJSONObject(i);
+            String reviewAuthor = individualReviewObject.getString(REVIEW_AUTHOR);
+            String reviewContent = individualReviewObject.getString(REVIEW_CONTENT);
+            String[] individualReview = {reviewAuthor,reviewContent};
+            reviewContentValues[i] = individualReview;
+        }
+        return reviewContentValues;
     }
 
 }

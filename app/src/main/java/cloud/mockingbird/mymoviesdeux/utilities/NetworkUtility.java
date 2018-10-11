@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
-import cloud.mockingbird.mymoviesdeux.BuildConfig;
 import cloud.mockingbird.mymoviesdeux.R;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,22 +31,23 @@ public class NetworkUtility {
 
 
     /**
-     * Please note these methods are cookie cutter methods from Google/Udacity's Sunshine Project.
      *
-     * @return URL
+     * @param context
+     * @param params
+     * @return
      */
     public static URL buildMoviesUrl(Context context, String params) {
 
         Uri builtUri = Uri.parse(DEFAULT_URL)
-                .buildUpon()
-                .appendPath(VERSION)
-                .appendPath(MOVIE_PARAM)
-                .appendPath(params)
-                .appendQueryParameter(KEY_PARAM, context.getString(
-                        R.string.movie_db_key))
-                .appendQueryParameter("language", LANG_PARAM)
-                .appendQueryParameter("page", PAGE_PARAM)
-                .build();
+            .buildUpon()
+            .appendPath(VERSION)
+            .appendPath(MOVIE_PARAM)
+            .appendPath(params)
+            .appendQueryParameter(KEY_PARAM, context.getString(
+                R.string.movie_db_key))
+            .appendQueryParameter("language", LANG_PARAM)
+            .appendQueryParameter("page", PAGE_PARAM)
+            .build();
         URL url = null;
 
         try {
@@ -56,7 +56,7 @@ public class NetworkUtility {
             e.printStackTrace();
         }
 
-        Log.v(LOG_TAG, "Built URI " + url);
+        Log.v(LOG_TAG, "MOVIE URL - Built URI: " + url);
 
         return url;
 
@@ -64,6 +64,7 @@ public class NetworkUtility {
 
     /**
      *
+     * @param context
      * @param params
      * @return
      */
@@ -86,12 +87,18 @@ public class NetworkUtility {
             e.printStackTrace();
         }
 
-        Log.v(LOG_TAG, "Built URI " + url);
+        Log.v(LOG_TAG, "REVIEW URL - Built URI " + url);
 
         return url;
 
     }
 
+    /**
+     *
+     * @param context
+     * @param params
+     * @return
+     */
     public static URL buildTrailerUrl(Context context, String params) {
 
         Uri builtUri = Uri.parse(DEFAULT_URL)

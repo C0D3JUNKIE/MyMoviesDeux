@@ -23,6 +23,7 @@
     <!-- - - - - - - - - - -  -->
     <string name="action_by_top_rated">Sort By Rating</string>
     <string name="action_by_most_popular">Sort By Popularity</string>
+    <string name="action_favorite">Show Favorites</string>
     <string name="action_refresh">Refresh</string>
 
     <!-- - - - - - - - - - -  -->
