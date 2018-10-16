@@ -24,16 +24,16 @@ public class MovieDbHelper extends SQLiteOpenHelper {
         MovieProvider.COLUMN_MOVIE_ID           + " INTEGER NOT NULL, " +
         MovieProvider.COLUMN_VOTE_AVERAGE       + " REAL NOT NULL," +
         MovieProvider.COLUMN_TITLE              + " TEXT NOT NULL, " +
-        MovieProvider.COLUMN_POPULARITY         + " REAL NOT NULL, " +
+//        MovieProvider.COLUMN_POPULARITY         + " REAL NOT NULL, " +
         MovieProvider.COLUMN_POSTER             + " TEXT, " +
-        MovieProvider.COLUMN_ORIGINAL_LANGUAGE  + " TEXT NOT NULL, "    +
-        MovieProvider.COLUMN_ORIGINAL_TITLE     + " TEXT NOT NULL, "    +
-        MovieProvider.COLUMN_BACKDROP_PATH      + " TEXT NOT NULL, "    +
-        MovieProvider.COLUMN_ADULT              + " BOOLEAN NOT NULL, " +
+//        MovieProvider.COLUMN_ORIGINAL_LANGUAGE  + " TEXT NOT NULL, "    +
+//        MovieProvider.COLUMN_ORIGINAL_TITLE     + " TEXT NOT NULL, "    +
+//        MovieProvider.COLUMN_BACKDROP_PATH      + " TEXT NOT NULL, "    +
+//        MovieProvider.COLUMN_ADULT              + " BOOLEAN NOT NULL, " +
         MovieProvider.COLUMN_DESCRIPTION        + " TEXT, " +
         MovieProvider.COLUMN_RELEASE_DATE       + " TEXT, " +
-        MovieProvider.COLUMN_VIDEOS             + " TEXT, " +
-        MovieProvider.COLUMN_REVIEWS            + " TEXT, " +
+//        MovieProvider.COLUMN_VIDEOS             + " TEXT, " +
+//        MovieProvider.COLUMN_REVIEWS            + " TEXT, " +
         "UNIQUE (" + MovieProvider.COLUMN_MOVIE_ID + ") ON CONFLICT REPLACE" + ");";
     sqLiteDatabase.execSQL(SQL_CREATE_MOVIES_TABLE);
   }

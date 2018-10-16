@@ -2,10 +2,12 @@ package cloud.mockingbird.mymoviesdeux;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Parcelable;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,7 +21,7 @@ import android.widget.TextView;
 
 import cloud.mockingbird.mymoviesdeux.adapters.MoviePosterAdapter;
 import cloud.mockingbird.mymoviesdeux.data.MoviePreferences;
-import cloud.mockingbird.mymoviesdeux.databinding.ActivityMainBinding;
+import cloud.mockingbird.mymoviesdeux.data.MovieProvider;
 import cloud.mockingbird.mymoviesdeux.tasks.FetchFavorites;
 import cloud.mockingbird.mymoviesdeux.utilities.JsonUtility;
 import cloud.mockingbird.mymoviesdeux.utilities.NetworkUtility;
@@ -33,14 +35,10 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity implements
     MoviePosterAdapter.MoviePosterAdapterOnClickHandler {
 
-  //data binding
-  ActivityMainBinding bindingMain;
-
   //Class variables
   private static final String TAG = MainActivity.class.getSimpleName();
   public static final int TEXT_INDEX_ID = 1;
   public static final int IMAGE_INDEX_ID = 5;
-
 
   public static TextView errorMessageDisplay;
   public static ProgressBar loadingIndicator;
@@ -51,6 +49,14 @@ public class MainActivity extends AppCompatActivity implements
   private GridLayoutManager layoutManager;
   private Parcelable moviePostersState;
 
+  private String[] ids;
+  private String[] votes;
+  private String[] titles;
+  private String[] posters;
+  private String[] dates;
+  private String[] descriptions;
+
+
   public static Context context;
 
   /**
@@ -60,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    bindingMain = DataBindingUtil.setContentView(this, R.layout.activity_main);
+    setContentView(R.layout.activity_main);
 
     //Tie recyclerView, errorText, and progressBar to the xml entity.
     recyclerView = findViewById(R.id.rv_movie_posters);
@@ -210,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements
         new FetchMovies().execute(MoviePreferences.PREF_SORT_POPULARITY);
         return true;
       case R.id.action_favorite:
-        new FetchFavorites().execute(MoviePreferences.PREF_SORT_FAVORITE);
+        showFavorites();
         return true;
       case R.id.action_refresh:
         moviePosterAdapter.setMoviePosterData(null);
@@ -219,6 +225,55 @@ public class MainActivity extends AppCompatActivity implements
       default:
         return super.onOptionsItemSelected(item);
     }
+  }
+
+  public boolean onlineCheck(Context context){
+    ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+    NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+    if(networkInfo == null){
+      return false;
+    }else{
+      return networkInfo.isConnected();
+    }
+  }
+
+  private void showFavorites(){
+    Uri uri = MovieProvider.CONTENT_URI;
+    Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+
+    if(cursor != null && cursor.moveToFirst()){
+      int i = 0;
+      int length = cursor.getCount();
+      //initialize local arrays
+      ids = new String[length];
+      votes = new String[length];
+      titles = new String[length];
+      posters = new String[length];
+      dates = new String[length];
+      descriptions = new String[length];
+      //simple loop for assigning db values
+      while(!cursor.isAfterLast()){
+        ids[i] = cursor.getString(cursor.getColumnIndex(MovieProvider.COLUMN_MOVIE_ID));
+        votes[i] = cursor.getString(cursor.getColumnIndex(MovieProvider.COLUMN_VOTE_AVERAGE));
+        titles[i] = cursor.getString(cursor.getColumnIndex(MovieProvider.COLUMN_TITLE));
+        posters[i] = cursor.getString(cursor.getColumnIndex(MovieProvider.COLUMN_POSTER));
+        dates[i] = cursor.getString(cursor.getColumnIndex(MovieProvider.COLUMN_RELEASE_DATE));
+        descriptions[i] = cursor.getString(cursor.getColumnIndex(MovieProvider.COLUMN_DESCRIPTION));
+        //increment counter
+        i++;
+        cursor.moveToNext();
+      }
+      cursor.close();
+    }else{
+      TextView emptyFavorites = new TextView(this);
+      emptyFavorites.setText(getString(R.string.empty_favorites));
+      emptyFavorites.setTextSize(18);
+      emptyFavorites.setPadding(30,30,0,0);
+      recyclerView.removeAllViews();
+      recyclerView.addView(emptyFavorites);
+    }
+
+
   }
 
 }

@@ -34,6 +34,8 @@
     <!-- - - - - - - - - - -  -->
     <!-- API KEY INSERT YOURS -->
     <!-- - - - - - - - - - -  -->
-    <string name="movie_db_key">1234567890</string>
+    <!--<string name="movie_db_key">1234567890</string>-->
+
+    <string name="empty_favorites">There are currently no selected favorites.</string>
 
 </resources>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import cloud.mockingbird.mymoviesdeux.BuildConfig;
 import cloud.mockingbird.mymoviesdeux.R;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +29,7 @@ public class NetworkUtility {
     private static final String KEY_PARAM = "api_key";
     private static final String LANG_PARAM = "en-US";
     private static final String PAGE_PARAM = "1";
+    private static final String APIKEY = BuildConfig.API_KEY;
 
 
     /**
@@ -43,8 +45,7 @@ public class NetworkUtility {
             .appendPath(VERSION)
             .appendPath(MOVIE_PARAM)
             .appendPath(params)
-            .appendQueryParameter(KEY_PARAM, context.getString(
-                R.string.movie_db_key))
+            .appendQueryParameter(KEY_PARAM, APIKEY)
             .appendQueryParameter("language", LANG_PARAM)
             .appendQueryParameter("page", PAGE_PARAM)
             .build();
@@ -76,8 +77,7 @@ public class NetworkUtility {
             .appendPath(MOVIE_PARAM)
             .appendPath(params)
             .appendPath(REVIEW_PARAM)
-            .appendQueryParameter(KEY_PARAM, context.getString(
-                R.string.movie_db_key))
+            .appendQueryParameter(KEY_PARAM, APIKEY)
             .build();
         URL url = null;
 
@@ -107,8 +107,7 @@ public class NetworkUtility {
             .appendPath(MOVIE_PARAM)
             .appendPath(params)
             .appendPath(TRAILER_PARAM)
-            .appendQueryParameter(KEY_PARAM, context.getString(
-                R.string.movie_db_key))
+            .appendQueryParameter(KEY_PARAM, APIKEY)
             .build();
         URL url = null;
 
