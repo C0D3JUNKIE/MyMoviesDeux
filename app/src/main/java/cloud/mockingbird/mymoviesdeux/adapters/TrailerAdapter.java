@@ -15,15 +15,15 @@ import com.squareup.picasso.Picasso;
 
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerAdapterViewHolder> {
 
-  private static final String YOUTUBE_URL = "http://img.youtube.com/vi/";
-  private static final int TRAILER_TEXT_INDEX = 0;
-  private static final int TRAILER_NAME_INDEX = 0;
+  private static final String YOUTUBE_URL = "https://img.youtube.com/vi/";
+  private static final String YOUTUBE_RESOLUTION = "maxresdefault.jpg";
+  private static final int TRAILER_KEY_INDEX = 3;
+  private static final int TRAILER_NAME_INDEX = 4;
 
 
   private Context context;
   private String[][] trailers;
-
-  final private TrailerAdapter.TrailerAdapterOnClickHandler clickHandler;
+  final private TrailerAdapterOnClickHandler clickHandler;
 
   public interface TrailerAdapterOnClickHandler{ void onClick(String[] trailerSelected);}
 
@@ -63,9 +63,9 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
   @Override
   public TrailerAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     Context context = parent.getContext();
-    int layoutIdForListItem = R.layout.movie_reviews;
+    int layoutIdForListItem = R.layout.movie_trailers;
     LayoutInflater inflater = LayoutInflater.from(context);
-    boolean attachToParentImmediately = false;
+    boolean attachToParentImmediately = true;
 
     View view = inflater.inflate(layoutIdForListItem, parent, attachToParentImmediately);
     return new TrailerAdapterViewHolder(view);
@@ -74,9 +74,9 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
   @Override
   public void onBindViewHolder(@NonNull TrailerAdapterViewHolder holder, int position) {
     String listedTrailers[] = trailers[position];
-    holder.trailerName.setText(listedTrailers[1]);
+    holder.trailerName.setText(listedTrailers[TRAILER_NAME_INDEX]);
     Picasso.get()
-        .load(YOUTUBE_URL + listedTrailers[0])
+        .load(YOUTUBE_URL + listedTrailers[TRAILER_KEY_INDEX] + YOUTUBE_RESOLUTION)
         .into(holder.trailerImage);
   }
 
@@ -88,14 +88,9 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
     return trailers.length;
   }
 
-
-
-  public void updateTrailers(String[][] updatedTrailers){
+  public void setTrailerData(String[][] updatedTrailers){
     trailers = updatedTrailers;
     notifyDataSetChanged();
   }
-
-
-
 
 }

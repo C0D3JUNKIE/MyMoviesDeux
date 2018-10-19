@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements
 
   //Local Variables
   private MoviePosterAdapter moviePosterAdapter;
-  private RecyclerView recyclerView;
+  private RecyclerView movieRecyclerView;
   private GridLayoutManager layoutManager;
   private Parcelable moviePostersState;
 
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements
     setContentView(R.layout.activity_main);
 
     //Tie recyclerView, errorText, and progressBar to the xml entity.
-    recyclerView = findViewById(R.id.rv_movie_posters);
+    movieRecyclerView = findViewById(R.id.rv_movie_posters);
     errorMessageDisplay = findViewById(R.id.tv_error_message_display);
     loadingIndicator = findViewById(R.id.pb_loading_indicator);
 
@@ -81,12 +81,12 @@ public class MainActivity extends AppCompatActivity implements
     layoutManager = new GridLayoutManager(this, getResources().getInteger(R.integer.span),
         recyclerViewOrientation,
         shouldReversLayout);
-    recyclerView.setLayoutManager(layoutManager);
-    recyclerView.setHasFixedSize(true);
+    movieRecyclerView.setLayoutManager(layoutManager);
+    movieRecyclerView.setHasFixedSize(true);
 
     //Tie the adapter to the views
     moviePosterAdapter = new MoviePosterAdapter(this);
-    recyclerView.setAdapter(moviePosterAdapter);
+    movieRecyclerView.setAdapter(moviePosterAdapter);
 
     loadingIndicator = findViewById(R.id.pb_loading_indicator);
     loadMovies();
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements
    */
   public void showMovies() {
     errorMessageDisplay.setVisibility(View.INVISIBLE);
-    recyclerView.setVisibility(View.VISIBLE);
+    movieRecyclerView.setVisibility(View.VISIBLE);
   }
 
   /**
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements
    * Displays error message
    */
   public void showErrorMessage() {
-    recyclerView.setVisibility(View.INVISIBLE);
+    movieRecyclerView.setVisibility(View.INVISIBLE);
     errorMessageDisplay.setVisibility(View.VISIBLE);
   }
 
@@ -269,8 +269,8 @@ public class MainActivity extends AppCompatActivity implements
       emptyFavorites.setText(getString(R.string.empty_favorites));
       emptyFavorites.setTextSize(18);
       emptyFavorites.setPadding(30,30,0,0);
-      recyclerView.removeAllViews();
-      recyclerView.addView(emptyFavorites);
+      movieRecyclerView.removeAllViews();
+      movieRecyclerView.addView(emptyFavorites);
     }
 
 

@@ -38,4 +38,9 @@
 
     <string name="empty_favorites">There are currently no selected favorites.</string>
 
+    <string name="trailer_none">There are no trailers available for this film.</string>
+    <string name="review_none">There are no reviews available for this film.</string>
+    <string name="trailer_image">Trailer Image</string>
+    <string name="trailer_header">Trailers</string>
+
 </resources>

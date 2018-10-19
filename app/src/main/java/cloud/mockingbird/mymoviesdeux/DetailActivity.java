@@ -23,10 +23,13 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import android.widget.Toast;
@@ -34,6 +37,7 @@ import android.widget.Toast;
 import cloud.mockingbird.mymoviesdeux.adapters.ReviewAdapter;
 import cloud.mockingbird.mymoviesdeux.adapters.TrailerAdapter;
 import cloud.mockingbird.mymoviesdeux.data.FavoriteProvider;
+import cloud.mockingbird.mymoviesdeux.data.MoviePreferences;
 import cloud.mockingbird.mymoviesdeux.data.MovieProvider;
 import cloud.mockingbird.mymoviesdeux.databinding.ActivityDetailBinding;
 import cloud.mockingbird.mymoviesdeux.model.MoviePoster;
@@ -46,6 +50,9 @@ import com.squareup.picasso.Picasso;
 import java.net.URL;
 
 import cloud.mockingbird.mymoviesdeux.data.MovieDbHelper;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -84,6 +91,11 @@ public class DetailActivity extends AppCompatActivity{
 
   private FloatingActionButton fabFavorite;
 
+  private LinearLayoutManager trailerLayoutManager;
+  private RecyclerView trailerRecyclerView;
+  private LinearLayout trailerList;
+  private LinearLayout reviewList;
+
   private String movieId;
   private String rating;
   private String title;
@@ -100,6 +112,14 @@ public class DetailActivity extends AppCompatActivity{
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_detail);
 
+    //
+    trailerRecyclerView = findViewById(R.id.rv_trailer_view);
+    trailerRecyclerView.setHasFixedSize(true);
+    trailerLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+    trailerRecyclerView.setLayoutManager(trailerLayoutManager);
+    trailerRecyclerView.setAdapter(trailerAdapter);
+    trailerRecyclerView.setNestedScrollingEnabled(false);
+
     //Binding view with xml
     movieImage = findViewById(R.id.iv_movie_poster_image);
     movieTitle = findViewById(R.id.tv_movie_title);
@@ -107,6 +127,7 @@ public class DetailActivity extends AppCompatActivity{
     movieRating = findViewById(R.id.tv_movie_vote_average);
     movieDescription = findViewById(R.id.tv_movie_plot);
     fabFavorite = findViewById(R.id.fab_favorite);
+
 
 //    bindingDetails = DataBindingUtil.setContentView(this, R.layout.activity_detail);
 //    context = getApplicationContext();
@@ -156,6 +177,8 @@ public class DetailActivity extends AppCompatActivity{
         Picasso.get().load(IMAGE_URL + movie[5]).into(movieImage);
       }
     }
+
+
 
     if(movieFavorite(movieId)){
       fabFavorite.setImageResource(R.drawable.ic_heart);
@@ -255,6 +278,25 @@ public class DetailActivity extends AppCompatActivity{
 //    }
 //  }
 
+  public void showTrailers(){
+    trailerRecyclerView.setVisibility(View.VISIBLE);
+  }
+
+  public void loadTrailers(){
+    showTrailers();
+    new FetchTrailersTask().execute();
+  }
+
+  public void showReviews(){
+//    reviewErrorMessageDisplay.setVisibility(View.INVISIBLE);
+//    llReviewList.setVisibility(View.VISIBLE);
+  }
+
+  public void loadReviews(){
+//    showReviews();
+//    new FetchReviewsTask().execute();
+  }
+
   public boolean movieFavorite(String id){
     Uri uri = MovieProvider.CONTENT_URI;
     Cursor cursor = getContentResolver().query(uri, null, null, null, null);
@@ -272,6 +314,74 @@ public class DetailActivity extends AppCompatActivity{
     return false;
   }
 
+  public class FetchTrailersTask extends AsyncTask<String, Void, String[][]> {
 
+    @Override
+    protected void onPreExecute() {
+      super.onPreExecute();
+    }
+
+    @Override
+    protected void onPostExecute(String[][] strings) {
+//      super.onPostExecute(strings);
+//      loadingIndicator.setVisibility(View.INVISIBLE);
+//      if (strings != null) {
+//        showTrailers();
+        trailerAdapter.setTrailerData(strings);
+//      } else {
+////        showErrorMessage();
+//      }
+
+    }
+
+    @Override
+    protected String[][] doInBackground(String... strings) {
+      if (strings.length == 0) {
+        return null;
+      }
+      String params = strings[0];
+      URL trailersURL = NetworkUtility.buildMoviesUrl(DetailActivity.this, params);
+      try {
+        String jsonResponse = NetworkUtility.getResponseFromHttpURL(trailersURL);
+        String[][] jsonTrailerData = JsonUtility.getTrailerData(jsonResponse);
+        return jsonTrailerData;
+      } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+      }
+    }
+
+  }
+
+  public class FetchReviewsTask extends AsyncTask<String, Void, String[][]> {
+
+    @Override
+    protected void onPreExecute() {
+      super.onPreExecute();
+    }
+
+    @Override
+    protected void onPostExecute(String[][] strings) {
+      super.onPostExecute(strings);
+    }
+
+    @Override
+    protected String[][] doInBackground(String... strings) {
+      if (strings.length == 0) {
+        return null;
+      }
+      String params = strings[0];
+      URL reviewsURL = NetworkUtility.buildReviewUrl(DetailActivity.this, params);
+      try {
+        String jsonResponse = NetworkUtility.getResponseFromHttpURL(reviewsURL);
+        String[][] jsonReviewData = JsonUtility.getTrailerData(jsonResponse);
+        return jsonReviewData;
+      } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+      }
+    }
+
+  }
 
 }
